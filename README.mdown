@@ -1,0 +1,18 @@
+# ResqueUtils
+
+ResqueUtils is a gem that gives you extra helper cap commands for use with Resque.
+
+## Requirements
+
+* Capistrano
+* Resque
+
+## Installation
+
+Firstly you'll need to install the gem, if you are using bundler add this to your Gemfile...
+
+    gem 'resque_utils'
+    
+Open your deploy.rb and simple require the file...
+
+    require 'resque_utils/capistrano'
