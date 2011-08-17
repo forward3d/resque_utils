@@ -10,18 +10,18 @@ Capistrano::Configuration.instance(:must_exist).load do
 
       desc "Requeue all failed jobs"
       task :requeue_all do
-        run "#{resque_pre} \"(Resque::Failure.count-1).downto(0).each { |i| Resque::Failure.requeue(i) }\""
+        run "#{resque_pre} 'ResqueUtils::requeue_all'"
       end
 
       desc "Remove all failed jobs"
       task :remove_all do
-        run "#{resque_pre} \"(Resque::Failure.count-1).downto(0).each { |i| Resque::Failure.remove(i) }\""
+        run "#{resque_pre} 'ResqueUtils::remove_all'"
       end
 
       desc "Requeue specific failed jobs (specify with '--set exception=SomeErrorHere)"
       task :requeue_specific do
         if exists?(:exception)
-          run "#{resque_pre} \"(Resque::Failure.count-1).downto(0).each { |i| ex = Resque::Failure.all(i)['exception']; if ex == '#{exception}' then Resque::Failure.requeue(i); end }\""
+          run "#{resque_pre} \"ResqueUtils::requeue_all('#{exception}')\""
         else
           raise ArgumentError, "No exception was specified, use '--set exception=SomeErrorHere'"
         end
@@ -30,7 +30,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Remove specific failed jobs (specify with '--set exception=SomeErrorHere)"
       task :remove_specific do
         if exists?(:exception)
-          run "#{resque_pre} \"(Resque::Failure.count-1).downto(0).each { |i| ex = Resque::Failure.all(i)['exception']; if ex == '#{exception}' then Resque::Failure.remove(i); end }\""
+          run "#{resque_pre} \"ResqueUtils::remove_all('#{exception}')\""
         else
           raise ArgumentError, "No exception was specified, use '--set exception=SomeErrorHere'"
         end
