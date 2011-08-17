@@ -22,7 +22,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :requeue_specific do
         if exists?(:exception)
           set :resque_pre, "cd #{current_path} && RAILS_ENV=#{environment} bundle exec rails runner"
-          run "#{resque_pre} \"ResqueUtils::requeue_all('#{exception}')\""
+          run "#{resque_pre} \"ResqueUtils::requeue_specific('#{exception}')\""
         else
           raise ArgumentError, "No exception was specified, use '--set exception=SomeErrorHere'"
         end
@@ -32,7 +32,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :remove_specific do
         if exists?(:exception)
           set :resque_pre, "cd #{current_path} && RAILS_ENV=#{environment} bundle exec rails runner"
-          run "#{resque_pre} \"ResqueUtils::remove_all('#{exception}')\""
+          run "#{resque_pre} \"ResqueUtils::remove_specific('#{exception}')\""
         else
           raise ArgumentError, "No exception was specified, use '--set exception=SomeErrorHere'"
         end
