@@ -9,10 +9,41 @@ ResqueUtils is a gem that gives you extra helper cap commands for use with Resqu
 
 ## Installation
 
-Firstly you'll need to install the gem, if you are using bundler add this to your Gemfile...
+Firstly you'll need to install the gem, if you are using bundler add this to your Gemfile (but make sure it doesn't go in a gem group that isn't being sent to the server)...
 
-    gem 'resque_utils'
+``` ruby
+gem 'resque_utils'
+```
     
 Open your deploy.rb and simple require the file...
 
-    require 'resque_utils/capistrano'
+``` ruby
+require 'resque_utils/capistrano'
+```
+    
+You'll then have the following commands available to you...
+
+``` ruby
+cap resque:failed:remove_all       # Remove all failed jobs
+cap resque:failed:remove_specific  # Remove specific failed jobs (specify with '--set exception=SomeError')
+cap resque:failed:requeue_all      # Requeue all failed jobs
+cap resque:failed:requeue_specific # Requeue specific failed jobs (specify with '--set exception=SomeError')
+```
+
+Obviously you won't want this to run on all your nodes, so make sure to filter to the node you want when you run it...
+
+``` ruby
+HOSTFILTER=resque.somedomain.com cap resque:failed:remove_all
+```
+
+To run the specific commands, for example to requeue any job that failed with the exception ``` SomeError ```...
+
+``` ruby
+cap resque:failed:requeue_specific --set exception=SomeError
+```
+    
+You could also do something like this, although i'd *really* not recommend it...
+
+``` ruby
+before 'deploy:symlink', 'resque:failed:remove_all'
+```
