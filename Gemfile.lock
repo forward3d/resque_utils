@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resque_utils (0.0.2)
+    resque_utils (0.0.3)
 
 GEM
   remote: http://rubygems.org/
