@@ -26,6 +26,7 @@ You'll then have the following commands available to you...
 ``` ruby
 cap resque:failed:remove_all       # Remove all failed jobs
 cap resque:failed:remove_specific  # Remove specific failed jobs (specify with '--set exception=SomeError')
+cap resque:failed:remove_retried   # Remove all retried jobs
 cap resque:failed:requeue_all      # Requeue all failed jobs
 cap resque:failed:requeue_specific # Requeue specific failed jobs (specify with '--set exception=SomeError')
 ```
