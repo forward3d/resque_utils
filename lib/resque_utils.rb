@@ -36,4 +36,15 @@ module ResqueUtils
     puts "#{count} jobs removed"
   end
   
+  def self.remove_retried
+    count = 0
+    (Resque::Failure.count-1).downto(0).each { |i|
+      if Resque::Failure.all(i)['retried_at']
+        Resque::Failure.remove(i)
+        count += 1
+      end
+    }
+    puts "#{count} retried jobs removed"
+  end
+  
 end

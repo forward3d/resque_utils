@@ -37,7 +37,13 @@ Capistrano::Configuration.instance(:must_exist).load do
           raise ArgumentError, "No exception was specified, use '--set exception=SomeErrorHere'"
         end
       end
-  
+      
+      desc "Remove all retried failed jobs"
+      task :remove_retried do
+        set :resque_pre, "cd #{current_path} && RAILS_ENV=#{environment} bundle exec rails runner"
+        run "#{resque_pre} \"ResqueUtils::remove_retried\""
+      end
+      
     end
   end
   
